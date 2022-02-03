@@ -18,7 +18,7 @@ Make sure to read the disclaimer when you run the program for the first time!
 
 ### 1.0.2 - 04/02/2022
 
-- Fixed bug in failedbeatmaps.txt showing DMCAFAILURE for every failed map
+- Fixed bug in failedbeatmaps.txt writer showing DMCAFAILURE for every failed map
 - Create empty failedbeatmaps.txt even if no maps fail
 - Made some text more descriptive
 - Replace all instances of 'maps' with 'beatmaps'
@@ -29,7 +29,7 @@ Make sure to read the disclaimer when you run the program for the first time!
 - Fixed crash when closing the program during config file setup, then re-opening the program
 - Expanded disclaimer at the start
 - Better text feedback during config file setup
-- Added text in failedbeatmaps.txt to differentiate between osu!direct timeout and DMCA'd / broken maps that chimu will download when they are working again (will likely be temporary)
+- Added text in failedbeatmaps.txt writer to differentiate between osu!direct timeout and DMCA'd / broken maps that chimu will download when they are working again (will likely be temporary)
 
 ### 1.0.0 - 03/02/2022
 
