@@ -32,14 +32,14 @@ public class BeatmapDownloader {
     private static String path;
 
     public static void main(String[] args) {
-        System.out.println("Welcome to Jatie's Beatmap Downloader! Things to make sure of before running the program:");
+        System.out.println("Welcome to Jatie's Beatmap Downloader! Things to make sure of before running the program:\n");
         System.out.println("1. Make sure you have osu! supporter! The program relies on osu!direct.");
         System.out.println("2. Make sure the osu! client is open before starting downloads.");
         System.out.println("3. If you have been playing for a while, I recommend to restart the osu! client to refresh the osu.db file.");
         System.out.println("4. Ensure you have the 'Prefer no-video downloads' option enabled in the osu! settings. This will force osu!direct to download beatmaps without videos.");
-        System.out.println("5. Stay on the main menu while downloading maps.");
-        System.out.println("6. It is possible to abort the program while downloading maps, but ensure that before you re-run the program you import all the downloaded maps and restart the osu! client.");
-        System.out.println("7. If you don't follow these guidelines strictly, you will get no support from me!");
+        System.out.println("5. Stay on the main menu while downloading beatmaps.");
+        System.out.println("6. It is possible to abort the program while still downloading beatmaps, but make sure that before you re-run the program you must import all of the downloaded beatmaps and restart the osu! client.");
+        System.out.println("7. If you don't follow these guidelines strictly, you will get no support from me!\n");
         startingConfirmation();
         configFileAction();
         readConfigFile();
@@ -197,9 +197,9 @@ public class BeatmapDownloader {
                 }
             }
             date = json.getJSONObject(json.length() - 1).getString("approved_date");
-            System.out.print(beatmapSets.size() + " maps processed\r");
+            System.out.print(beatmapSets.size() + " beatmaps processed\r");
         }
-        System.out.println(beatmapSets.size() + " total maps processed");
+        System.out.println(beatmapSets.size() + " total beatmaps processed");
         return beatmapSets;
     }
 
@@ -229,7 +229,7 @@ public class BeatmapDownloader {
                 BinaryReader.skipString(d);
                 d.skip(18);
             }
-            System.out.print("Finished scanning " + beatmapSetIds.size() + " beatmaps!\n");
+            System.out.print("Finished scanning " + beatmapSetIds.size() + " beatmap sets from " + numberBeatmaps + " beatmaps!\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -238,7 +238,7 @@ public class BeatmapDownloader {
 
     public static boolean enterRankedStatusPreference(String status) {
         while (true) {
-            System.out.print("Would you like to download " + status + " maps? (y/n): ");
+            System.out.print("Would you like to download " + status + " beatmaps? (y/n): ");
             String result = SCANNER.nextLine();
             if (result.equals("y")) {
                 return true;
@@ -253,7 +253,7 @@ public class BeatmapDownloader {
     public static String enterYearRange() {
         while (true) {
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-            System.out.print("Enter the year you want to begin fetching maps from (2007 to " + currentYear + "): ");
+            System.out.print("Enter the year you want to begin fetching beatmaps from (2007 to " + currentYear + "): ");
             String yearString = SCANNER.nextLine();
             try {
                 int year = Integer.parseInt(yearString);
