@@ -70,10 +70,12 @@ public class BeatmapDownloader {
                 System.out.println("(" + count++ + "/" + missingBeatmaps.size() + ") Downloading " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " through osu!direct");
                 downloadDirect(beatmap);
             } else {
-                System.out.println("(" + count++ + "/" + missingBeatmaps.size() + ") Downloading " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " through chimu.moe");
-                if (!downloadChimu(beatmap)) {
-                    writeFailedBeatmap(beatmap);
-                }
+//                System.out.println("(" + count++ + "/" + missingBeatmaps.size() + ") Downloading " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " through chimu.moe");
+//                if (!downloadChimu(beatmap)) {
+//                    writeFailedBeatmap(beatmap);
+//                }
+                System.out.println("(" + count++ + "/" + missingBeatmaps.size() + ") Beatmap " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " cannot be downloaded because chimu.moe is broken, writing to failedbeatmaps.txt");
+                writeFailedBeatmap(beatmap);
             }
         }
 
@@ -114,24 +116,24 @@ public class BeatmapDownloader {
         }
     }
 
-    public static boolean downloadChimu(Beatmap beatmap) {
-        File newFile = new File(path + "\\Songs\\" + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + ".osz");
-        URL url;
-
-        try {
-            url = new URL("https://api.chimu.moe/v1/download/" + beatmap.getSetId() + "?n=1");
-            if (downloadDataFromUrl(url, newFile)) {
-                System.out.println("SUCCESS: " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " was successfully downloaded!");
-                return true;
-            } else {
-                newFile.delete();
-                System.out.println("FAILURE: " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " failed to download!");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+//    public static boolean downloadChimu(Beatmap beatmap) {
+//        File newFile = new File(path + "\\Songs\\" + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + ".osz");
+//        URL url;
+//
+//        try {
+//            url = new URL("https://api.chimu.moe/v1/download/" + beatmap.getSetId() + "?n=1");
+//            if (downloadDataFromUrl(url, newFile)) {
+//                System.out.println("SUCCESS: " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " was successfully downloaded!");
+//                return true;
+//            } else {
+//                newFile.delete();
+//                System.out.println("FAILURE: " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " failed to download!");
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
 
 //    private static boolean downloadDataFromUrl(URL url, File newFile) {
 //        try (FileOutputStream fos = new FileOutputStream(newFile); ReadableByteChannel rbc = Channels.newChannel(url.openStream())) {
