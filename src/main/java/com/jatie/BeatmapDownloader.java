@@ -156,7 +156,7 @@ public class BeatmapDownloader {
     }
 
     public static boolean checkOsuOpen() {
-        try (BufferedReader input = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(new String[] {"tasklist.exe", "/fo", "csv", "/nh"}).getInputStream()))) {
+        try (BufferedReader input = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(new String[]{"tasklist.exe", "/fo", "csv", "/nh"}).getInputStream()))) {
             String line;
             while ((line = input.readLine()) != null) {
                 if (line.startsWith("\"osu!.exe\"")) {
@@ -369,55 +369,4 @@ public class BeatmapDownloader {
             System.out.println("Read the disclaimer properly!");
         }
     }
-
-//    public static Set<Integer> getBeatmapSetIdsFromSongsFolder() {
-//        System.out.println("Scanning songs folder...");
-//        Set<Integer> beatmapSetIds = new HashSet<>();
-//        File songsFolder = new File(path + "\\Songs");
-//        File[] listOfSongs = songsFolder.listFiles();
-//
-//        for (File file : listOfSongs) {
-//            if (file.isDirectory()) {
-//                String fileName = file.getName();
-//                if (fileName.matches("^\\d+\\s.*")) {
-//                    beatmapSetIds.add(Integer.parseInt(fileName.substring(0, fileName.indexOf(' '))));
-//                } else {
-//                    System.out.println("Warning: Folder '" + fileName + "' doesn't follow typical naming convention! (Will not break the program, but will likely re-download redundant maps)");
-//                }
-//            }
-//        }
-//        System.out.println("Done scanning " + beatmapSetIds.size() + " beatmaps from the songs folder!");
-//        return beatmapSetIds;
-//    }
-
-//    public static void restartOsu() {
-//        // Destroying osu! process
-//        System.out.println("Rebooting...");
-//        try (BufferedReader input = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec(new String[] {"tasklist.exe", "/fo", "csv", "/nh"}).getInputStream()))) {
-//            String line;
-//            while ((line = input.readLine()) != null) {
-//                if (line.startsWith("\"osu!.exe\"")) {
-//                    String[] split = line.split(",");
-//                    String cmd = "taskkill /F /PID " + split[1].substring(1, split[1].length() - 1);
-//                    Runtime.getRuntime().exec(cmd);
-//                    Thread.sleep(10000);
-//                    break;
-//                }
-//            }
-//        } catch (IOException | InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        // Opening osu! process
-//        try {
-//            Process osu = Runtime.getRuntime().exec(path + "\\osu!.exe");
-//            Thread.sleep(10000);
-//            if (!osu.isAlive()) {
-//                System.out.println("Couldn't boot osu! during the restart! A problem with closing / re-opening osu!. Shutting down the program...");
-//                System.exit(0);
-//            }
-//            System.out.println("Restart successful!");
-//        } catch (IOException | InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//    }
 }
