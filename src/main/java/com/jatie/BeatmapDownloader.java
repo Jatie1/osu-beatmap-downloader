@@ -322,10 +322,9 @@ public class BeatmapDownloader {
     }
 
     public static boolean validateOsuDirectoryPath(String thisPath) {
-        System.out.println("Validating folder location...");
         File songsFolder = new File(thisPath + "\\Songs");
         if (songsFolder.isDirectory() && thisPath.matches("(?:[^\\\\]+\\\\)+osu!$")) {
-            System.out.println("Folder is valid!");
+            System.out.println("osu! folder is valid!");
             return true;
         }
         System.out.println("Location is invalid! Must be in a similar format to 'C:\\Program Files\\osu!'");
