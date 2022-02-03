@@ -119,13 +119,14 @@ public class BeatmapDownloader {
     }
 
     public static void preDownloadActivities() {
-        File failedBeatmaps = new File("failedbeatmaps.txt");
-        failedBeatmaps.delete();
         System.out.println("Final check if osu! client is open before starting downloads...");
         while (!checkOsuOpen()) {
             System.out.print("Why is the osu! client not open? Did you read the disclaimer? Open the client and press enter to continue.");
             SCANNER.nextLine();
         }
+        // Delete old failedbeatmaps.txt if exists, then create blank new one
+        File failedBeatmaps = new File("failedbeatmaps.txt");
+        failedBeatmaps.delete();
         try {
             failedBeatmaps.createNewFile();
         } catch (IOException e) {
