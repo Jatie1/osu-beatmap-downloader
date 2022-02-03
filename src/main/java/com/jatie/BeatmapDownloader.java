@@ -291,13 +291,12 @@ public class BeatmapDownloader {
     public static void configFileAction() {
         File configFile = new File("beatmapdownloader.cfg");
         if (!configFile.exists()) {
-            createConfigFile();
+            createConfigFile(configFile);
         }
     }
 
-    public static void createConfigFile() {
+    public static void createConfigFile(File configFile) {
         System.out.println("Configuration file does not exist! Creating a new one.");
-        File configFile = new File("beatmapdownloader.cfg");
         try (FileWriter fw = new FileWriter(configFile)) {
             fw.write("apikey=" + enterApiKey() + "\n");
             fw.write("path=" + enterOsuDirectoryPath());
