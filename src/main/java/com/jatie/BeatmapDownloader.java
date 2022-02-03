@@ -38,7 +38,7 @@ public class BeatmapDownloader {
         System.out.println("3. If you have been playing for a while, I recommend to restart the osu! client to refresh the osu.db file.");
         System.out.println("4. Ensure you have the 'Prefer no-video downloads' option enabled in the osu! settings. This will force osu!direct to download beatmaps without videos.");
         System.out.println("5. Stay on the main menu while downloading maps.");
-        System.out.println("6. It is possible to abort the program while downloading maps, but ensure that before you re-run the program you import all downloaded maps and restart the osu! client.");
+        System.out.println("6. It is possible to abort the program while downloading maps, but ensure that before you re-run the program you import all the downloaded maps and restart the osu! client.");
         System.out.println("7. If you don't follow these guidelines strictly, you will get no support from me!");
         startingConfirmation();
         configFileAction();
