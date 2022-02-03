@@ -206,7 +206,7 @@ public class BeatmapDownloader {
             int numberBeatmaps = BinaryReader.readInt(d);
 
             for (int i = 1; i < numberBeatmaps + 1; i++) {
-                System.out.print("Scanning beatmap " + i + " of " + numberBeatmaps + "\r");
+                System.out.print("Scanning beatmap " + i + " of " + numberBeatmaps + "...\r");
                 BinaryReader.skipString(d, 9);
                 d.skip(39);
                 for (int j = 0; j < 4; j++) {
@@ -322,8 +322,10 @@ public class BeatmapDownloader {
     }
 
     public static boolean validateOsuDirectoryPath(String thisPath) {
+        System.out.println("Validating folder location...");
         File songsFolder = new File(thisPath + "\\Songs");
         if (songsFolder.isDirectory() && thisPath.matches("(?:[^\\\\]+\\\\)+osu!$")) {
+            System.out.println("Folder is valid!");
             return true;
         }
         System.out.println("Location is invalid! Must be in a similar format to 'C:\\Program Files\\osu!'");
