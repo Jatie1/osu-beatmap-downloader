@@ -16,6 +16,14 @@ Make sure to read the disclaimer when you run the program for the first time!
 
 ## Changelog
 
+### 1.0.2 - 04/02/2022
+
+- Fixed bug in failedbeatmaps.txt showing DMCAFAILURE for every failed map
+- Create empty failedbeatmaps.txt even if no maps fail
+- Made some text more descriptive
+- Replace all instances of 'maps' with 'beatmaps'
+- Formatting fixes
+
 ### 1.0.1 - 04/02/2022
 
 - Fixed crash when closing the program during config file setup, then re-opening the program
