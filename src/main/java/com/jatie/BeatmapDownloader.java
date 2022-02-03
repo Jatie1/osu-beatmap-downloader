@@ -81,7 +81,7 @@ public class BeatmapDownloader {
             }
         }
 
-        System.out.println("Completed!");
+        System.out.println("Completed all downloads! Check failedbeatmaps.txt for all beatmaps that couldn't be downloaded!");
     }
 
     public static void downloadDirect(Beatmap beatmap) {
@@ -95,7 +95,7 @@ public class BeatmapDownloader {
         while (downloads.list().length == 0) {
             if (System.currentTimeMillis() - time > 30000) {
                 System.out.println("FAILURE: Timeout length exceeded! Skipping " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + "...");
-                writeFailedBeatmap(beatmap, true);
+                writeFailedBeatmap(beatmap, false);
                 return;
             }
             try {
@@ -119,11 +119,17 @@ public class BeatmapDownloader {
     }
 
     public static void preDownloadActivities() {
-        new File("failedbeatmaps.txt").delete();
+        File failedBeatmaps = new File("failedbeatmaps.txt");
+        failedBeatmaps.delete();
         System.out.println("Final check if osu! client is open before starting downloads...");
         while (!checkOsuOpen()) {
             System.out.print("Why is the osu! client not open? Did you read the disclaimer? Open the client and press enter to continue.");
             SCANNER.nextLine();
+        }
+        try {
+            failedBeatmaps.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
