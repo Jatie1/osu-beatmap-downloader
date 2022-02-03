@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Beatmap Downloader:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Beatmap_Downloader_jar</output-path>
+    <root id="archive" name="Beatmap Downloader.jar">
+      <element id="module-output" name="Beatmap Downloader" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/json/json/20211205/json-20211205.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
