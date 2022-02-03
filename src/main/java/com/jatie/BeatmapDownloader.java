@@ -270,9 +270,11 @@ public class BeatmapDownloader {
 
     public static void createConfigFile(File configFile) {
         System.out.println("Configuration file does not exist! Creating a new one.");
+        String thisApiKey = enterApiKey();
+        String thisPath = enterOsuDirectoryPath();
         try (FileWriter fw = new FileWriter(configFile)) {
-            fw.write("apikey=" + enterApiKey() + "\n");
-            fw.write("path=" + enterOsuDirectoryPath());
+            fw.write("apikey=" + thisApiKey + "\n");
+            fw.write("path=" + thisPath);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -289,7 +291,7 @@ public class BeatmapDownloader {
         }
     }
 
-    public static String enterApiKey() throws IOException {
+    public static String enterApiKey() {
         while (true) {
             System.out.print("Enter osu! API key: ");
             String thisApiKey = SCANNER.nextLine();
@@ -299,16 +301,20 @@ public class BeatmapDownloader {
         }
     }
 
-    public static boolean validateApiKey(String thisApiKey) throws IOException {
+    public static boolean validateApiKey(String thisApiKey) {
         System.out.println("Validating API key...");
-        URL url = new URL("https://osu.ppy.sh/api/get_beatmaps?k=" + thisApiKey + "&s=1");
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-        if (httpConn.getResponseCode() == 401) {
-            System.out.println("API key is invalid!");
-            return false;
+        try {
+            URL url = new URL("https://osu.ppy.sh/api/get_beatmaps?k=" + thisApiKey + "&s=1");
+            HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+            if (httpConn.getResponseCode() != 401) {
+                System.out.println("API key is valid!");
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println("API key is valid!");
-        return true;
+        System.out.println("API key is invalid!");
+        return false;
     }
 
     public static String enterOsuDirectoryPath() {
