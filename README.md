@@ -3,6 +3,8 @@ Beatmap downloader for the rhythm game osu! coded in Java.
 
 Created as a fun personal project, don't expect quality code.
 
+NOTE: Requires osu!supporter!
+
 To run:
 
 Download the .zip file in the Releases section, extract and run the run.bat file.
