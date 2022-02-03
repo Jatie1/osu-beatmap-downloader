@@ -138,15 +138,15 @@ public class BeatmapDownloader {
 //        return false;
 //    }
 
-    private static boolean downloadDataFromUrl(URL url, File newFile) {
-        try (FileOutputStream fos = new FileOutputStream(newFile); ReadableByteChannel rbc = Channels.newChannel(url.openStream())) {
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-        } catch (IOException e) {
-            return false;
-        }
-
-        return newFile.length() != 0;
-    }
+//    private static boolean downloadDataFromUrl(URL url, File newFile) {
+//        try (FileOutputStream fos = new FileOutputStream(newFile); ReadableByteChannel rbc = Channels.newChannel(url.openStream())) {
+//            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+//        } catch (IOException e) {
+//            return false;
+//        }
+//
+//        return newFile.length() != 0;
+//    }
 
     public static void preDownloadActivities() {
         new File("failedbeatmaps.txt").delete();
