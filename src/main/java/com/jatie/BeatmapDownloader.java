@@ -53,9 +53,13 @@ public class BeatmapDownloader {
         downloadBeatmaps(allBeatmaps);
     }
 
-    public static void writeFailedBeatmap(Beatmap failedBeatmap) {
+    public static void writeFailedBeatmap(Beatmap failedBeatmap, boolean chimu) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("failedbeatmaps.txt", true))) {
-            bw.write(failedBeatmap.getSetId() + " " + failedBeatmap.getArtistName() + " - " + failedBeatmap.getSongName() + "\n");
+            if (chimu) {
+                bw.write("DMCAFAILURE " + failedBeatmap.getSetId() + " " + failedBeatmap.getArtistName() + " - " + failedBeatmap.getSongName() + "\n");
+            } else {
+                bw.write("TIMEOUT " + failedBeatmap.getSetId() + " " + failedBeatmap.getArtistName() + " - " + failedBeatmap.getSongName() + "\n");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,7 +79,7 @@ public class BeatmapDownloader {
 //                    writeFailedBeatmap(beatmap);
 //                }
                 System.out.println("(" + count++ + "/" + missingBeatmaps.size() + ") Beatmap " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " cannot be downloaded because chimu.moe is broken, writing to failedbeatmaps.txt");
-                writeFailedBeatmap(beatmap);
+                writeFailedBeatmap(beatmap, true);
             }
         }
 
@@ -93,7 +97,7 @@ public class BeatmapDownloader {
         while (downloads.list().length == 0) {
             if (System.currentTimeMillis() - time > 30000) {
                 System.out.println("FAILURE: Timeout length exceeded! Skipping " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + "...");
-                writeFailedBeatmap(beatmap);
+                writeFailedBeatmap(beatmap, true);
                 return;
             }
             try {
