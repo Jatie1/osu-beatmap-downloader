@@ -16,7 +16,7 @@ Make sure to read the disclaimer when you run the program for the first time!
 
 ## Changelog
 
-### 1.0.1 - 03/02/2022
+### 1.0.1 - 04/02/2022
 
 - Fixed crash when closing the program during config file setup, then re-opening the program
 - Expanded disclaimer at the start
