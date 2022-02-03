@@ -1,0 +1,81 @@
+
+N	java:S106$"9Replace this use of System.out or System.err by a logger.(ÿÚÖ§
+S	java:S106%"9Replace this use of System.out or System.err by a logger.(†îÅàüÿÿÿÿ
+S	java:S106&"9Replace this use of System.out or System.err by a logger.(¤²Û›ÿÿÿÿÿ
+S	java:S106'"9Replace this use of System.out or System.err by a logger.(½å‚¡úÿÿÿÿ
+P	java:S8994";Do something with the "boolean" value returned by "delete".(ÛÖ¼ı
+d
+java:S40424"NUse "java.nio.file.Files#delete" here for better messages on error conditions.(ÛÖ¼ı
+S	java:S106A"9Replace this use of System.out or System.err by a logger.(Óú×úÿÿÿÿ
+N	java:S106F"9Replace this use of System.out or System.err by a logger.(˜µ–
+N	java:S106J"9Replace this use of System.out or System.err by a logger.(•é”
+S	java:S106M"9Replace this use of System.out or System.err by a logger.(ü–ÉÍıÿÿÿÿ
+N	java:S106T"9Replace this use of System.out or System.err by a logger.(áÅëâ
+N	java:S106Y"9Replace this use of System.out or System.err by a logger.(Ê€Ô¹
+t
+java:S2142e"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ò¶È
+t
+java:S2142q"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ò¶È
+S	java:S106m"9Replace this use of System.out or System.err by a logger.(ÿè”îıÿÿÿÿ
+N	java:S106p"9Replace this use of System.out or System.err by a logger.(™Ø•¤
+Q	java:S125}"<This block of commented-out lines of code should be removed.(©èÿ³
+u
+java:S2142‡"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+Q	java:S125"<This block of commented-out lines of code should be removed.(íí€˜
+R	java:S125Š"<This block of commented-out lines of code should be removed.(˜ĞòÂ
+u
+java:S2142"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+W	java:S125’"<This block of commented-out lines of code should be removed.(µÂ„Äøÿÿÿÿ
+u
+java:S2142–"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+O	java:S106¢"9Replace this use of System.out or System.err by a logger.(¥Èâê
+V	java:S899¥";Do something with the "boolean" value returned by "delete".(„˜ÛŞıÿÿÿÿ
+j
+java:S4042¥"NUse "java.nio.file.Files#delete" here for better messages on error conditions.(„˜ÛŞıÿÿÿÿ
+O	java:S106¦"9Replace this use of System.out or System.err by a logger.(âˆÁ…
+n
+java:S3776Â"RRefactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.(é×ÿùÿÿÿÿÿ
+8	java:S131Ò""Add a default case to this switch.(ñš»Ä
+O	java:S106ê"9Replace this use of System.out or System.err by a logger.(Ûï‘Ê
+M	java:S106ì"9Replace this use of System.out or System.err by a logger.(‚"
+T	java:S106ñ"9Replace this use of System.out or System.err by a logger.(ÊÔÑõÿÿÿÿÿ
+f
+java:S2674ô"JCheck the return value of the "skip" call to see how many bytes were read.(µÁƒúÿÿÿÿÿ
+O	java:S106ù"9Replace this use of System.out or System.err by a logger.(Ü’‹
+`
+java:S2674û"JCheck the return value of the "skip" call to see how many bytes were read.(ûÉ+
+a
+java:S2674ı"JCheck the return value of the "skip" call to see how many bytes were read.(“³ÿå
+a
+java:S2674ÿ"JCheck the return value of the "skip" call to see how many bytes were read.(ÁíÍı
+f
+java:S2674€"JCheck the return value of the "skip" call to see how many bytes were read.(Â´’—ıÿÿÿÿ
+f
+java:S2674‚"JCheck the return value of the "skip" call to see how many bytes were read.(ëœéÎıÿÿÿÿ
+f
+java:S2674„"JCheck the return value of the "skip" call to see how many bytes were read.(¥ Óúÿÿÿÿ
+a
+java:S2674†"JCheck the return value of the "skip" call to see how many bytes were read.(Œ…¥å
+a
+java:S2674ˆ"JCheck the return value of the "skip" call to see how many bytes were read.(Ï·
+O	java:S106Š"9Replace this use of System.out or System.err by a logger.(Û–»ò
+O	java:S106’"9Replace this use of System.out or System.err by a logger.(€Ú’å
+T	java:S106"9Replace this use of System.out or System.err by a logger.(Àßõ¿úÿÿÿÿ
+O	java:S106¡"9Replace this use of System.out or System.err by a logger.(®…»Ä
+T	java:S106§"9Replace this use of System.out or System.err by a logger.(”©èñüÿÿÿÿ
+T	java:S106¯"9Replace this use of System.out or System.err by a logger.(ÅãØİúÿÿÿÿ
+T	java:S106¶"9Replace this use of System.out or System.err by a logger.(¾Ôë€ÿÿÿÿÿ
+O	java:S106À"9Replace this use of System.out or System.err by a logger.(„ÅÊ›
+T	java:S106Ê"9Replace this use of System.out or System.err by a logger.(ì™íêúÿÿÿÿ
+T	java:S106ß"9Replace this use of System.out or System.err by a logger.(»À“ˆùÿÿÿÿ
+O	java:S106è"9Replace this use of System.out or System.err by a logger.(»Æ¹¬
+T	java:S106ì"9Replace this use of System.out or System.err by a logger.(óçûæùÿÿÿÿ
+T	java:S106ï"9Replace this use of System.out or System.err by a logger.(ÚëŒ¾úÿÿÿÿ
+O	java:S106õ"9Replace this use of System.out or System.err by a logger.(¿ğ÷
+h
+java:S5998ÿ"LRefactor this repetition that can lead to a stack overflow for large inputs.(½ëòïùÿÿÿÿ
+T	java:S106‚"9Replace this use of System.out or System.err by a logger.(²“áµÿÿÿÿÿ
+m
+java:S1192Å"VDefine a constant instead of duplicating this literal "beatmapdownloader.cfg" 3 times.(Ä‡şë
+b
+java:S2259Ë"FA "NullPointerException" could be thrown; "jsonText" is nullable here.(†÷¸¦ûÿÿÿÿ
