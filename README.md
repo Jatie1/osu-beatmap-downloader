@@ -25,6 +25,13 @@ If the .bat file is not working for some reason, you must do the following steps
 
 ## Changelog
 
+### 1.0.3 - 05/02/2022
+
+- Validate beatmapdownloader.cfg before reading it
+- Fixed rare crashes when osu! folder is missing required files / directories
+- Spaced out segments of the text output to make it more readable
+- Various text additions / changes / fixes
+
 ### 1.0.2 - 04/02/2022
 
 - Fixed bug in failedbeatmaps.txt writer showing DMCAFAILURE for every failed map
