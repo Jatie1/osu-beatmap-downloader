@@ -86,6 +86,9 @@ public class BeatmapDownloader {
 
     public static void downloadDirect(Beatmap beatmap) {
         File downloads = new File(path + "\\Downloads");
+        if (!downloads.exists()) {
+            downloads.mkdir();
+        }
         try {
             Runtime.getRuntime().exec(new String[]{path + "\\osu!.exe", "osu://s/" + beatmap.getSetId()});
         } catch (IOException e) {
@@ -119,6 +122,7 @@ public class BeatmapDownloader {
     }
 
     public static void preDownloadActivities() {
+        // osu! client open check
         while (!checkOsuOpen()) {
             System.out.print("\nWhy is the osu! client not open? Did you read the disclaimer? Open the client and press enter to continue.");
             SCANNER.nextLine();
@@ -205,9 +209,14 @@ public class BeatmapDownloader {
     }
 
     public static Set<Integer> getBeatmapSetIdsFromDatabaseFile() {
-        System.out.println("\nScanning osu!.db file...");
         Set<Integer> beatmapSetIds = new HashSet<>();
-        try (FileInputStream f = new FileInputStream(path + "\\osu!.db"); DataInputStream d = new DataInputStream(f)) {
+        File dbFile = new File(path + "\\osu!.db");
+        while (!dbFile.exists()) {
+            System.out.print("\nThe osu!.db file doesn't exist in your osu! folder! Ensure that the file exists and press enter to re-scan for it.");
+            SCANNER.nextLine();
+        }
+        System.out.println("\nScanning osu!.db file...");
+        try (FileInputStream f = new FileInputStream(dbFile); DataInputStream d = new DataInputStream(f)) {
             d.skip(17);
             BinaryReader.skipString(d);
             int numberBeatmaps = BinaryReader.readInt(d);
