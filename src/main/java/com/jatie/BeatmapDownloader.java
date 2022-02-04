@@ -18,6 +18,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,8 +42,7 @@ public class BeatmapDownloader {
         System.out.println("6. It is possible to abort the program while downloads are in progress. However, before you re-run the program you must import all of the downloaded beatmaps and restart the osu! client.");
         System.out.println("7. If you don't follow these guidelines strictly, you will get no support from me!\n");
         startingConfirmation();
-        configFileAction();
-        readConfigFile();
+        configFile();
         Set<Integer> userBeatmaps = getBeatmapSetIdsFromDatabaseFile();
         String date = enterYearRange();
         boolean includeRankedMaps = enterRankedStatusPreference("ranked");
@@ -58,7 +58,7 @@ public class BeatmapDownloader {
     public static void writeFailedBeatmap(Beatmap failedBeatmap, boolean chimu) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("failedbeatmaps.txt", true))) {
             if (chimu) {
-                bw.write("DMCAFAILURE " + failedBeatmap.getSetId() + " " + failedBeatmap.getArtistName() + " - " + failedBeatmap.getSongName() + "\n");
+                bw.write("DMCA " + failedBeatmap.getSetId() + " " + failedBeatmap.getArtistName() + " - " + failedBeatmap.getSongName() + "\n");
             } else {
                 bw.write("TIMEOUT " + failedBeatmap.getSetId() + " " + failedBeatmap.getArtistName() + " - " + failedBeatmap.getSongName() + "\n");
             }
@@ -268,80 +268,89 @@ public class BeatmapDownloader {
         }
     }
 
-    public static void configFileAction() {
+    public static void configFile() {
         File configFile = new File("beatmapdownloader.cfg");
         if (!configFile.exists()) {
+            System.out.println("Configuration file does not exist! Creating a new one.");
+            createConfigFile(configFile);
+            return;
+        }
+        if (!readConfigFile(configFile)) {
+            System.out.println("Configuration file is corrupted! Creating a new one.");
             createConfigFile(configFile);
         }
     }
 
     public static void createConfigFile(File configFile) {
-        System.out.println("Configuration file does not exist! Creating a new one.");
-        String thisApiKey = enterApiKey();
-        String thisPath = enterOsuDirectoryPath();
+        apiKey = enterApiKey();
+        path = enterOsuDirectory();
         try (FileWriter fw = new FileWriter(configFile)) {
-            fw.write("apikey=" + thisApiKey + "\n");
-            fw.write("path=" + thisPath);
+            fw.write("apikey=" + apiKey + "\n");
+            fw.write("path=" + path);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void readConfigFile() {
-        try (BufferedReader br = new BufferedReader(new FileReader("beatmapdownloader.cfg"))) {
-            String readApiKey = br.readLine();
-            String readPath = br.readLine();
-            apiKey = readApiKey.substring(readApiKey.indexOf('=') + 1);
-            path = readPath.substring(readPath.indexOf('=') + 1);
+    public static boolean readConfigFile(File configFile) {
+        Properties properties = new Properties();
+        try (BufferedReader br = new BufferedReader(new FileReader(configFile))) {
+            properties.load(br);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        String thisApiKey = properties.getProperty("apikey");
+        String thisPath = properties.getProperty("path");
+        if (thisApiKey != null && thisPath != null && validateApiKey(thisApiKey) && validateOsuDirectory(thisPath)) {
+            apiKey = thisApiKey;
+            path = thisPath;
+            return true;
+        }
+        return false;
     }
 
     public static String enterApiKey() {
         while (true) {
             System.out.print("Enter osu! API key: ");
             String thisApiKey = SCANNER.nextLine();
+            System.out.println("Validating API key...");
             if (validateApiKey(thisApiKey)) {
+                System.out.println("API key is valid!");
                 return thisApiKey;
             }
+            System.out.println("API key is invalid!");
         }
     }
 
     public static boolean validateApiKey(String thisApiKey) {
-        System.out.println("Validating API key...");
         try {
             URL url = new URL("https://osu.ppy.sh/api/get_beatmaps?k=" + thisApiKey + "&s=1");
             HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
             if (httpConn.getResponseCode() != 401) {
-                System.out.println("API key is valid!");
                 return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("API key is invalid!");
         return false;
     }
 
-    public static String enterOsuDirectoryPath() {
+    public static String enterOsuDirectory() {
         while (true) {
             System.out.print("Enter osu! folder location: ");
             String thisPath = SCANNER.nextLine();
-            if (validateOsuDirectoryPath(thisPath)) {
+            if (validateOsuDirectory(thisPath)) {
+                System.out.println("Location is valid!");
+                thisPath = thisPath.replace("\\", "\\\\");
                 return thisPath;
             }
+            System.out.println("Location is invalid! Must be in a similar format to 'C:\\Program Files\\osu!'");
         }
     }
 
-    public static boolean validateOsuDirectoryPath(String thisPath) {
+    public static boolean validateOsuDirectory(String thisPath) {
         File songsFolder = new File(thisPath + "\\Songs");
-        if (songsFolder.isDirectory() && thisPath.matches("(?:[^\\\\]+\\\\)+osu!$")) {
-            System.out.println("osu! folder is valid!");
-            return true;
-        }
-        System.out.println("Location is invalid! Must be in a similar format to 'C:\\Program Files\\osu!'");
-        return false;
+        return songsFolder.isDirectory() && thisPath.matches("(?:[^\\\\]+\\\\)+osu!$");
     }
 
     public static void startingConfirmation() {
