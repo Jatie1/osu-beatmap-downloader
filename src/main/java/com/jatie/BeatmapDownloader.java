@@ -239,7 +239,7 @@ public class BeatmapDownloader {
                 BinaryReader.skipString(d);
                 d.skip(18);
             }
-            System.out.print("Finished scanning " + beatmapSetIds.size() + " beatmap sets from " + numberBeatmaps + " beatmaps!\n");
+            System.out.println("Finished scanning " + beatmapSetIds.size() + " beatmap sets from " + numberBeatmaps + " beatmaps!\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -261,7 +261,6 @@ public class BeatmapDownloader {
     }
 
     public static String enterYearRange() {
-        System.out.print("\n");
         while (true) {
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
             System.out.print("Enter the year you want to begin fetching beatmaps from (2007 to " + currentYear + ") (EG '2020' will fetch all maps from 2020 to present date): ");
