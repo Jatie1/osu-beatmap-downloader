@@ -155,6 +155,7 @@ public class BeatmapDownloader {
                 missingMaps.add(beatmap);
             }
         }
+        System.out.println("\nThe program will download a total of " + missingMaps.size() + " beatmaps!\n");
         return missingMaps;
     }
 
@@ -198,9 +199,9 @@ public class BeatmapDownloader {
                 }
             }
             date = json.getJSONObject(json.length() - 1).getString("approved_date");
-            System.out.print(beatmapSets.size() + " beatmaps processed\r");
+            System.out.print(beatmapSets.size() + " beatmaps fetched from the API...\r");
         }
-        System.out.println(beatmapSets.size() + " total beatmaps processed");
+        System.out.println(beatmapSets.size() + " total beatmaps fetched from the API!");
         return beatmapSets;
     }
 
