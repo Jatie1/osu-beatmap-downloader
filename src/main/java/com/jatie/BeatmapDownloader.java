@@ -68,7 +68,7 @@ public class BeatmapDownloader {
     }
 
     public static void downloadBeatmaps(Set<Beatmap> missingBeatmaps) {
-        System.out.println("Starting downloads!");
+        System.out.println("\nStarting downloads!");
 
         int count = 1;
         for (Beatmap beatmap : missingBeatmaps) {
@@ -81,7 +81,7 @@ public class BeatmapDownloader {
             }
         }
 
-        System.out.println("Completed all downloads! Check failedbeatmaps.txt for all beatmaps that couldn't be downloaded!");
+        System.out.println("\nCompleted all downloads! Check failedbeatmaps.txt for all beatmaps that couldn't be downloaded!");
     }
 
     public static void downloadDirect(Beatmap beatmap) {
@@ -119,9 +119,8 @@ public class BeatmapDownloader {
     }
 
     public static void preDownloadActivities() {
-        System.out.println("Final check if osu! client is open before starting downloads...");
         while (!checkOsuOpen()) {
-            System.out.print("Why is the osu! client not open? Did you read the disclaimer? Open the client and press enter to continue.");
+            System.out.print("\nWhy is the osu! client not open? Did you read the disclaimer? Open the client and press enter to continue.");
             SCANNER.nextLine();
         }
         // Delete old failedbeatmaps.txt if exists, then create blank new one
@@ -155,11 +154,11 @@ public class BeatmapDownloader {
                 missingMaps.add(beatmap);
             }
         }
-        System.out.println("\nThe program will download a total of " + missingMaps.size() + " beatmaps!\n");
         return missingMaps;
     }
 
     public static Set<Beatmap> getAllBeatmaps(String date, boolean includeRankedMaps, boolean includeApprovedMaps, boolean includeQualifiedMaps, boolean includeLovedMaps) {
+        System.out.println("\nFetching beatmap information from osu! API...");
         Set<Beatmap> beatmapSets = new HashSet<>();
         while (true) {
             String jsonText = null;
@@ -206,7 +205,7 @@ public class BeatmapDownloader {
     }
 
     public static Set<Integer> getBeatmapSetIdsFromDatabaseFile() {
-        System.out.println("Scanning osu!.db file...");
+        System.out.println("\nScanning osu!.db file...");
         Set<Integer> beatmapSetIds = new HashSet<>();
         try (FileInputStream f = new FileInputStream(path + "\\osu!.db"); DataInputStream d = new DataInputStream(f)) {
             d.skip(17);
@@ -253,6 +252,7 @@ public class BeatmapDownloader {
     }
 
     public static String enterYearRange() {
+        System.out.print("\n");
         while (true) {
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
             System.out.print("Enter the year you want to begin fetching beatmaps from (2007 to " + currentYear + "): ");
@@ -272,12 +272,12 @@ public class BeatmapDownloader {
     public static void configFile() {
         File configFile = new File("beatmapdownloader.cfg");
         if (!configFile.exists()) {
-            System.out.println("Configuration file does not exist! Creating a new one.");
+            System.out.println("\nConfiguration file does not exist! Creating a new one.");
             createConfigFile(configFile);
             return;
         }
         if (!readConfigFile(configFile)) {
-            System.out.println("Configuration file is corrupted! Creating a new one.");
+            System.out.println("\nConfiguration file is corrupted! Creating a new one.");
             createConfigFile(configFile);
         }
     }
@@ -312,7 +312,7 @@ public class BeatmapDownloader {
 
     public static String enterApiKey() {
         while (true) {
-            System.out.print("Enter osu! API key: ");
+            System.out.print("\nEnter osu! API key: ");
             String thisApiKey = SCANNER.nextLine();
             System.out.println("Validating API key...");
             if (validateApiKey(thisApiKey)) {
@@ -338,7 +338,7 @@ public class BeatmapDownloader {
 
     public static String enterOsuDirectory() {
         while (true) {
-            System.out.print("Enter osu! folder location: ");
+            System.out.print("\nEnter osu! folder location: ");
             String thisPath = SCANNER.nextLine();
             if (validateOsuDirectory(thisPath)) {
                 System.out.println("Location is valid!");
@@ -361,7 +361,7 @@ public class BeatmapDownloader {
             if (result.equals("y")) {
                 return;
             }
-            System.out.println("Read the disclaimer properly!");
+            System.out.println("\nRead the disclaimer properly!");
         }
     }
 }
