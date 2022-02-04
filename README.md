@@ -14,6 +14,11 @@ Make sure you have Java installed: https://www.java.com/en/download/
 Download the .zip file in the Releases section, extract and run the run.bat file.
 Make sure to read the disclaimer when you run the program for the first time!
 
+If the .bat file is not working for some reason, you must do the following steps to run the program:
+- Open command prompt
+- Navigate to the location of the BeatmapDownloader.jar file using the 'cd' command
+- Type this command to run the file: 'java -jar BeatmapDownloader.jar'
+
 ## Changelog
 
 ### 1.0.2 - 04/02/2022
