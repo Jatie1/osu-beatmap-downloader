@@ -1,9 +1,9 @@
 osu! Beatmap Downloader
 =====
 
-Beatmap downloader coded in Java for the rhythm game osu!.
+Beatmap downloader programmed in Java for the rhythm game osu!.
 
-Created as a fun personal project, don't expect quality code.
+Created as a personal project to improve my coding skills, don't expect quality code.
 
 ## Running
 
