@@ -264,7 +264,7 @@ public class BeatmapDownloader {
         System.out.print("\n");
         while (true) {
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-            System.out.print("Enter the year you want to begin fetching beatmaps from (2007 to " + currentYear + "): ");
+            System.out.print("Enter the year you want to begin fetching beatmaps from (2007 to " + currentYear + ") (EG '2020' will fetch all maps from 2020 to present date): ");
             String yearString = SCANNER.nextLine();
             try {
                 int year = Integer.parseInt(yearString);
