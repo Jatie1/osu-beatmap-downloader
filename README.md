@@ -3,7 +3,7 @@ osu! Beatmap Downloader
 
 Beatmap downloader programmed in Java for the rhythm game osu!.
 
-It is able to download all ranked beatmaps from a a given year to present.
+It is able to download all ranked beatmaps from a a given year to present, and will scan the maps you already have to eliminate duplicate downloads.
 
 Will soon have the ability to download DMCA'd maps, once chimu.moe get their shit together.
 
