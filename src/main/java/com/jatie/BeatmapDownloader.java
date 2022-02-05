@@ -44,12 +44,12 @@ public class BeatmapDownloader {
         startingConfirmation();
         configFile();
         Set<Integer> userBeatmaps = getBeatmapSetIdsFromDatabaseFile();
-        String date = enterYearRange();
+        String[] dateRange = enterYearRange();
         boolean includeRankedMaps = enterRankedStatusPreference("ranked");
         boolean includeApprovedMaps = enterRankedStatusPreference("approved");
         boolean includeQualifiedMaps = enterRankedStatusPreference("qualified");
         boolean includeLovedMaps = enterRankedStatusPreference("loved");
-        Set<Beatmap> allBeatmaps = getAllBeatmaps(date, includeRankedMaps, includeApprovedMaps, includeQualifiedMaps, includeLovedMaps);
+        Set<Beatmap> allBeatmaps = getAllBeatmaps(dateRange, includeRankedMaps, includeApprovedMaps, includeQualifiedMaps, includeLovedMaps);
         allBeatmaps = getMissingBeatmaps(userBeatmaps, allBeatmaps);
         preDownloadActivities();
         downloadBeatmaps(allBeatmaps);
@@ -161,12 +161,13 @@ public class BeatmapDownloader {
         return missingMaps;
     }
 
-    public static Set<Beatmap> getAllBeatmaps(String date, boolean includeRankedMaps, boolean includeApprovedMaps, boolean includeQualifiedMaps, boolean includeLovedMaps) {
+    public static Set<Beatmap> getAllBeatmaps(String[] dateRange, boolean includeRankedMaps, boolean includeApprovedMaps, boolean includeQualifiedMaps, boolean includeLovedMaps) {
         System.out.println("\nFetching beatmap information from osu! API...");
         Set<Beatmap> beatmapSets = new HashSet<>();
+        outerloop: // I hate this code
         while (true) {
             String jsonText = null;
-            try (InputStream is = new URL("https://osu.ppy.sh/api/get_beatmaps?k=" + apiKey + "&m=0&since=" + date).openStream(); BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+            try (InputStream is = new URL("https://osu.ppy.sh/api/get_beatmaps?k=" + apiKey + "&m=0&since=" + dateRange[0]).openStream(); BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
                 jsonText = br.lines().collect(Collectors.joining());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -176,8 +177,12 @@ public class BeatmapDownloader {
             }
             JSONArray json = new JSONArray(jsonText);
             for (int i = 0; i < json.length(); i++) {
+                System.out.println(i);
                 JSONObject jsonObject = json.getJSONObject(i);
                 Beatmap beatmap = new Beatmap(jsonObject.getInt("beatmapset_id"), jsonObject.getString("artist"), jsonObject.getString("title"), jsonObject.getInt("audio_unavailable") == 1 || jsonObject.getInt("download_unavailable") == 1);
+                if (jsonObject.getString("approved_date").substring(0, 4).equals(dateRange[1])) {
+                    break outerloop; // Breaking out of nested loops sucks, but I don't care enough to fix
+                }
                 switch (jsonObject.getInt("approved")) {
                     case 1:
                         if (includeRankedMaps) {
@@ -201,7 +206,7 @@ public class BeatmapDownloader {
                         break;
                 }
             }
-            date = json.getJSONObject(json.length() - 1).getString("approved_date");
+            dateRange[0] = json.getJSONObject(json.length() - 1).getString("approved_date");
             System.out.print(beatmapSets.size() + " beatmaps fetched from the API...\r");
         }
         System.out.println(beatmapSets.size() + " total beatmaps fetched from the API!");
@@ -260,20 +265,22 @@ public class BeatmapDownloader {
         }
     }
 
-    public static String enterYearRange() {
+    public static String[] enterYearRange() {
         while (true) {
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-            System.out.print("Enter the year you want to begin fetching beatmaps from (2007 to " + currentYear + ") (EG '2020' will fetch all maps from 2020 to present date): ");
-            String yearString = SCANNER.nextLine();
-            try {
-                int year = Integer.parseInt(yearString);
-                if (year >= 2007 && year <= currentYear) {
-                    return year + "-01-01";
+            System.out.print("Enter the year range you want to begin fetching beatmaps from (between 2007 to " + currentYear + ") (EG '2013-2020' will fetch all beatmaps between 2013 and 2020): ");
+            String yearRange = SCANNER.nextLine();
+            if (yearRange.matches("[\\d]{4}-[\\d]{4}")) {
+                String[] yearRangeSplit = yearRange.split("-");
+                int yearStart = Integer.parseInt(yearRangeSplit[0]);
+                int yearEnd = Integer.parseInt(yearRangeSplit[1]);
+                if (yearStart >= 2007 && yearEnd <= currentYear && yearEnd >= yearStart) {
+                    yearRangeSplit[0] += "-01-01";
+                    yearRangeSplit[1] = Integer.toString(yearEnd + 1);
+                    return yearRangeSplit;
                 }
-            } catch (NumberFormatException e) {
-                // Continue the while loop
             }
-            System.out.println("Year entered is invalid!");
+            System.out.println("Year range entered is invalid!");
         }
     }
 
