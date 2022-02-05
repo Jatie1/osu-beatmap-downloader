@@ -53,6 +53,12 @@ public class BeatmapDownloader {
         allBeatmaps = getMissingBeatmaps(userBeatmaps, allBeatmaps);
         preDownloadActivities();
         downloadBeatmaps(allBeatmaps);
+        finishUp();
+    }
+
+    public static void finishUp() {
+        System.out.print("\nProgram has finished! Press enter to close the program.");
+        SCANNER.nextLine();
     }
 
     public static void writeFailedBeatmap(Beatmap failedBeatmap, boolean chimu) {
