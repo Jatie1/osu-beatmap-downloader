@@ -25,6 +25,13 @@ If the .bat file is not working for some reason, you must do the following steps
 
 ## Changelog
 
+### 1.1 - 06/02/2022
+
+- Added the ability to fetch maps from a year range (EG from 2013 to 2020) instead of just a year to present time
+- Added a timer showing how long all downloads took in hours, minutes and seconds. Displayed after all downloads are completed.
+- Doesn't instantly quit the program when all downloads are done, and instead prompts the user to press enter
+- Changed DMCA tag in failedbeatmaps.txt to DMCA/BROKEN, as some maps aren't actually skipped for DMCA reasons
+
 ### 1.0.3 - 05/02/2022
 
 - Validate beatmapdownloader.cfg before reading it
