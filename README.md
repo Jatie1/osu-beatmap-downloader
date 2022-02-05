@@ -25,6 +25,10 @@ If the .bat file is not working for some reason, you must do the following steps
 
 ## Changelog
 
+### 1.1.1 - 06/02/2022
+
+- Will delete all files in the Downloads folder before starting downloads (these are usually incomplete downloads that get stuck in the folder)
+
 ### 1.1 - 06/02/2022
 
 - Added the ability to fetch maps from a year range (EG from 2013 to 2020) instead of just a year to present time
