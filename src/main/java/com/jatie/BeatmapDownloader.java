@@ -70,6 +70,7 @@ public class BeatmapDownloader {
     public static void downloadBeatmaps(Set<Beatmap> missingBeatmaps) {
         System.out.println("\nStarting downloads!");
 
+        long startTime = System.currentTimeMillis();
         int count = 1;
         for (Beatmap beatmap : missingBeatmaps) {
             if (!beatmap.isRemoved() && !BROKEN_BEATMAPS.contains(beatmap.getSetId())) {
@@ -80,8 +81,12 @@ public class BeatmapDownloader {
                 writeFailedBeatmap(beatmap, true);
             }
         }
+        long totalSecs = (System.currentTimeMillis() - startTime) / 1000;
+        long hours = totalSecs / 3600;
+        long minutes = totalSecs / 60 % 60;
+        long seconds = totalSecs % 60;
 
-        System.out.println("\nCompleted all downloads! Check failedbeatmaps.txt for all beatmaps that couldn't be downloaded!");
+        System.out.println("\nCompleted all downloads in " + hours + "h " + minutes + "m " + seconds + "s! Check failedbeatmaps.txt for all beatmaps that couldn't be downloaded!");
     }
 
     public static void downloadDirect(Beatmap beatmap) {
