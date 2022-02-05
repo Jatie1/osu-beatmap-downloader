@@ -347,7 +347,7 @@ public class BeatmapDownloader {
 
     public static String enterApiKey() {
         while (true) {
-            System.out.print("\nEnter osu! API key: ");
+            System.out.print("\nEnter osu! API key (get it from here https://osu.ppy.sh/p/api): ");
             String thisApiKey = SCANNER.nextLine();
             System.out.println("Validating API key...");
             if (validateApiKey(thisApiKey)) {
