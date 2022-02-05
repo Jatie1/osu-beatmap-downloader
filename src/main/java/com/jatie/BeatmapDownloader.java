@@ -177,7 +177,6 @@ public class BeatmapDownloader {
             }
             JSONArray json = new JSONArray(jsonText);
             for (int i = 0; i < json.length(); i++) {
-                System.out.println(i);
                 JSONObject jsonObject = json.getJSONObject(i);
                 Beatmap beatmap = new Beatmap(jsonObject.getInt("beatmapset_id"), jsonObject.getString("artist"), jsonObject.getString("title"), jsonObject.getInt("audio_unavailable") == 1 || jsonObject.getInt("download_unavailable") == 1);
                 if (jsonObject.getString("approved_date").substring(0, 4).equals(dateRange[1])) {
@@ -268,7 +267,8 @@ public class BeatmapDownloader {
     public static String[] enterYearRange() {
         while (true) {
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-            System.out.print("Enter the year range you want to begin fetching beatmaps from (between 2007 to " + currentYear + ") (EG '2013-2020' will fetch all beatmaps between 2013 and 2020): ");
+            System.out.println("Enter the year range you want to begin fetching beatmaps from (between 2007 to " + currentYear + ")");
+            System.out.print("EG '2013-2020' will fetch all beatmaps between 2013 and 2020: ");
             String yearRange = SCANNER.nextLine();
             if (yearRange.matches("[\\d]{4}-[\\d]{4}")) {
                 String[] yearRangeSplit = yearRange.split("-");
