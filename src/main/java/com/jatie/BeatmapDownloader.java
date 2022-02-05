@@ -278,8 +278,8 @@ public class BeatmapDownloader {
     public static String[] enterYearRange() {
         while (true) {
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-            System.out.println("Enter the year range you want to begin fetching beatmaps from (between 2007 to " + currentYear + ")");
-            System.out.print("EG '2013-2020' will fetch all beatmaps between 2013 and 2020: ");
+            System.out.println("Enter the year range you want to begin fetching beatmaps from (between 2007 to " + currentYear + " in the format 'YYYY-YYYY')");
+            System.out.print("EG: '2013-2020' will fetch all beatmaps between 2013 and 2020: ");
             String yearRange = SCANNER.nextLine();
             if (yearRange.matches("[\\d]{4}-[\\d]{4}")) {
                 String[] yearRangeSplit = yearRange.split("-");
