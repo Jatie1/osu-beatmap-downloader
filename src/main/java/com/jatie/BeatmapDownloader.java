@@ -58,7 +58,7 @@ public class BeatmapDownloader {
     public static void writeFailedBeatmap(Beatmap failedBeatmap, boolean chimu) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("failedbeatmaps.txt", true))) {
             if (chimu) {
-                bw.write("DMCA " + failedBeatmap.getSetId() + " " + failedBeatmap.getArtistName() + " - " + failedBeatmap.getSongName() + "\n");
+                bw.write("DMCA/BROKEN " + failedBeatmap.getSetId() + " " + failedBeatmap.getArtistName() + " - " + failedBeatmap.getSongName() + "\n");
             } else {
                 bw.write("TIMEOUT " + failedBeatmap.getSetId() + " " + failedBeatmap.getArtistName() + " - " + failedBeatmap.getSongName() + "\n");
             }
