@@ -97,9 +97,6 @@ public class BeatmapDownloader {
 
     public static void downloadDirect(Beatmap beatmap) {
         File downloads = new File(path + "\\Downloads");
-        if (!downloads.exists()) {
-            downloads.mkdir();
-        }
         try {
             Runtime.getRuntime().exec(new String[]{path + "\\osu!.exe", "osu://s/" + beatmap.getSetId()});
         } catch (IOException e) {
@@ -137,6 +134,18 @@ public class BeatmapDownloader {
         while (!checkOsuOpen()) {
             System.out.print("\nWhy is the osu! client not open? Did you read the disclaimer? Open the client and press enter to continue.");
             SCANNER.nextLine();
+        }
+        // Check if Downloads folder doesn't exist and create it, otherwise delete all files in it
+        File downloads = new File(path + "\\Downloads");
+        if (!downloads.exists()) {
+            downloads.mkdir();
+        } else {
+            File[] downloadFolderFiles = downloads.listFiles();
+            if (downloadFolderFiles.length != 0) {
+                for (File file : downloadFolderFiles) {
+                    file.delete();
+                }
+            }
         }
         // Delete old failedbeatmaps.txt if exists, then create blank new one
         File failedBeatmaps = new File("failedbeatmaps.txt");
