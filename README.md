@@ -25,6 +25,12 @@ If the .bat file is not working for some reason, you must do the following steps
 
 ## Changelog
 
+### 1.1.2 - 14/02/2022
+
+- Added a more clear way to fetch beatmaps from a single year
+- Added a link to the osu! API page when prompted for it for convenience
+- Made reading osu!.db file a little faster
+
 ### 1.1.1 - 06/02/2022
 
 - Will delete all files in the Downloads folder before starting downloads (these are usually incomplete downloads that get stuck in the folder)
