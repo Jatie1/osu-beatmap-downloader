@@ -35,9 +35,8 @@ public class BinaryReader {
             count |= (b & 0x7F) << shift;
             shift += 7;
             if ((b & 0x80) == 0) {
-                break;
+                return count;
             }
         }
-        return count;
     }
 }
