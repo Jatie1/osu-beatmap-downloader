@@ -140,11 +140,8 @@ public class BeatmapDownloader {
         if (!downloads.exists()) {
             downloads.mkdir();
         } else {
-            File[] downloadFolderFiles = downloads.listFiles();
-            if (downloadFolderFiles.length != 0) {
-                for (File file : downloadFolderFiles) {
-                    file.delete();
-                }
+            for (File file : downloads.listFiles()) {
+                file.delete();
             }
         }
         // Delete old failedbeatmaps.txt if exists, then create blank new one
@@ -290,7 +287,7 @@ public class BeatmapDownloader {
             System.out.println("Enter either a single year or a year range you want to begin fetching beatmaps from (between 2007 to " + currentYear + " in the format 'YYYY' for single year and 'YYYY-YYYY' for a range)");
             System.out.print("EG: '2019' will fetch all beatmaps from 2019 and '2013-2020' will fetch all beatmaps between 2013 and 2020: ");
             String yearRange = SCANNER.nextLine();
-            if (yearRange.matches("[\\d]{4}-[\\d]{4}")) { // Range
+            if (yearRange.matches("\\d{4}-\\d{4}")) { // Range
                 String[] yearRangeSplit = yearRange.split("-");
                 int yearStart = Integer.parseInt(yearRangeSplit[0]);
                 int yearEnd = Integer.parseInt(yearRangeSplit[1]);
@@ -299,7 +296,7 @@ public class BeatmapDownloader {
                     return new String[]{yearRangeSplit[0] + "-01-01", Integer.toString(yearEnd + 1)};
                 }
             }
-            else if (yearRange.matches("[\\d]{4}")) { // Single year
+            else if (yearRange.matches("\\d{4}")) { // Single year
                 int year = Integer.parseInt(yearRange);
                 if (year >= 2007 && year <= currentYear) {
                     System.out.print("\n");
