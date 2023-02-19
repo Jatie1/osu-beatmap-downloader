@@ -11,7 +11,6 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -160,7 +159,7 @@ public class BeatmapDownloader {
             SCANNER.nextLine();
         }
         System.out.println("\nScanning osu!.db file...");
-        try (FileInputStream f = new FileInputStream(dbFile); DataInputStream d = new DataInputStream(f)) {
+        try (DataInputStream d = new DataInputStream(new FileInputStream(dbFile))) {
             d.skip(17);
             BinaryReader.skipString(d);
             int numberBeatmaps = BinaryReader.readInt(d);
@@ -234,7 +233,7 @@ public class BeatmapDownloader {
         outerloop: // I hate this code
         while (true) {
             String jsonText = null;
-            try (InputStream is = new URL("https://osu.ppy.sh/api/get_beatmaps?k=" + apiKey + "&m=0&since=" + dateRange[0]).openStream(); BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(new URL("https://osu.ppy.sh/api/get_beatmaps?k=" + apiKey + "&m=0&since=" + dateRange[0]).openStream(), StandardCharsets.UTF_8))) {
                 jsonText = br.lines().collect(Collectors.joining());
             } catch (IOException e) {
                 e.printStackTrace();
