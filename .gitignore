@@ -1,4 +1,5 @@
 beatmapdownloader.cfg
 failedbeatmaps.txt
+errorlog.txt
 target/
 out/

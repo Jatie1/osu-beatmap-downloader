@@ -1,21 +1,23 @@
 package com.jatie;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Properties;
@@ -291,10 +293,10 @@ public class BeatmapDownloader {
 
     public static void preDownloadActivities() {
         // osu! client open check
-        while (!checkOsuOpen()) {
-            System.out.print("\nWhy is the osu! client not open? Did you read the disclaimer? Open the client and press enter to continue.");
-            SCANNER.nextLine();
-        }
+//        while (!checkOsuOpen()) {
+//            System.out.print("\nWhy is the osu! client not open? Did you read the disclaimer? Open the client and press enter to continue.");
+//            SCANNER.nextLine();
+//        }
         // Check if Downloads folder doesn't exist and create it, otherwise delete all files in it
         File downloads = new File(path + "\\Downloads");
         if (!downloads.exists()) {
@@ -332,22 +334,52 @@ public class BeatmapDownloader {
         System.out.println("\nStarting downloads!");
 
         long startTime = System.currentTimeMillis();
-        int count = 1;
-        for (Beatmap beatmap : missingBeatmaps) {
-            if (!beatmap.isRemoved() && !BROKEN_BEATMAPS.contains(beatmap.getSetId())) {
-                System.out.println("(" + count++ + "/" + missingBeatmaps.size() + ") Downloading " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " through osu!direct");
-                downloadDirect(beatmap);
-            } else {
-                System.out.println("(" + count++ + "/" + missingBeatmaps.size() + ") Beatmap " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " cannot be downloaded because chimu.moe is broken, writing to failedbeatmaps.txt");
-                writeFailedBeatmap(beatmap, true);
-            }
-        }
+        downloadChimu(missingBeatmaps);
+
+//            if (!beatmap.isRemoved() && !BROKEN_BEATMAPS.contains(beatmap.getSetId())) {
+//                System.out.println("(" + count++ + "/" + missingBeatmaps.size() + ") Downloading " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " through osu!direct");
+//                downloadDirect(beatmap);
+//            } else {
+//                System.out.println("(" + count++ + "/" + missingBeatmaps.size() + ") Beatmap " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " cannot be downloaded because chimu.moe is broken, writing to failedbeatmaps.txt");
+//                writeFailedBeatmap(beatmap, true);
+//            }
         long totalSecs = (System.currentTimeMillis() - startTime) / 1000;
         long hours = totalSecs / 3600;
         long minutes = totalSecs / 60 % 60;
         long seconds = totalSecs % 60;
 
         System.out.println("\nCompleted all downloads in " + hours + "h " + minutes + "m " + seconds + "s! Check failedbeatmaps.txt for all beatmaps that couldn't be downloaded!");
+    }
+
+    public static void downloadChimu(Set<Beatmap> beatmaps) {
+        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(connectionManager).build();
+        int count = 1;
+        for (Beatmap beatmap : beatmaps) {
+            String url = "https://api.chimu.moe/v1/download/" + beatmap.getSetId() + "?n=1";
+            String sanitizedArtistName = beatmap.getArtistName().replaceAll("[\\\\/:*?\"<>|]", "");
+            String sanitizedSongName = beatmap.getSongName().replaceAll("[\\\\/:*?\"<>|]", "");
+            try {
+                if (!sanitizedArtistName.equals(beatmap.getArtistName()) || !sanitizedSongName.equals(beatmap.getSongName())) {
+                    try (BufferedWriter bw = new BufferedWriter(new FileWriter("failedbeatmaps.txt", true))) {
+                        bw.write("CHECK THIS ONE! " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + "\n");
+                    }
+                }
+                System.out.println("(" + count++ + "/" + beatmaps.size() + ") Downloading " + beatmap.getSetId() + " " + beatmap.getArtistName() + " - " + beatmap.getSongName() + " through osu!direct");
+                HttpGet httpGet = new HttpGet(url);
+                CloseableHttpResponse response = httpClient.execute(httpGet);
+
+                try (InputStream inputStream = response.getEntity().getContent()) {
+                    FileUtils.copyInputStreamToFile(inputStream, new File(path + "\\Songs\\" + beatmap.getSetId() + " " + sanitizedArtistName + " - " + sanitizedSongName + ".osz"));
+                }
+            } catch (Exception e) {
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter("errorlog.txt", true))) {
+                    bw.write(e + "\n");
+                } catch (IOException f) {
+                    f.printStackTrace();
+                }
+            }
+        }
     }
 
     public static void downloadDirect(Beatmap beatmap) {
