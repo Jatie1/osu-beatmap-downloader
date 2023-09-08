@@ -2,3 +2,9 @@ beatmapdownloader.cfg
 failedbeatmaps.txt
 target/
 out/
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+.DS_Store
