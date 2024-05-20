@@ -5,20 +5,28 @@ import com.jatie.Validator;
 import java.io.*;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class ConfigFileManager {
     private static final Scanner SCANNER = new Scanner(System.in);
-    public static final File CONFIG_FILE = new File("beatmapdownloader.cfg");
+    public static final File CONFIG_FILE_NAME = new File("beatmapdownloader.cfg");
 
-    public static void setConfigFile() {
-        if (!CONFIG_FILE.exists()) {
+    public static ConfigFile setConfigFile() throws IOException {
+        if (!CONFIG_FILE_NAME.exists()) {
             System.out.println("\nConfiguration file does not exist! Creating a new one.");
-            createConfigFile();
+            return createConfigFile();
         }
+        System.out.println("\nReading properties from config file...");
+        ConfigFile configFile = readConfigFile();
+        if (!Validator.validateConfigFile(configFile)) {
+            System.out.println("\nConfiguration file is corrupted! Creating a new one.");
+            return createConfigFile();
+        }
+        return configFile;
     }
 
-    public static void createConfigFile() throws IOException {
-        Properties prop = new Properties();
+    public static ConfigFile createConfigFile() throws IOException {
+        Properties properties = new Properties();
 
         ConfigFile configFile = new ConfigFile();
         configFile.setApiKey(getApiKey());
@@ -27,16 +35,26 @@ public class ConfigFileManager {
         configFile.setUsername(loginDetails[0]);
         configFile.setPassword(loginDetails[1]);
 
-        try (FileOutputStream fos = new FileOutputStream(CONFIG_FILE)) {
-            prop.setProperty("apiKey",
+        try (FileOutputStream fos = new FileOutputStream(CONFIG_FILE_NAME)) {
+            properties.setProperty("apiKey", configFile.getApiKey());
+            properties.setProperty("osuDirectory", configFile.getOsuDirectory());
+            properties.setProperty("username", configFile.getUsername());
+            properties.setProperty("password", configFile.getPassword());
+            properties.store(fos, "For Jatie's osu! Beatmap Downloader");
         }
-        apiKey = enterApiKey();
-        path = enterOsuDirectory();
-        try (FileWriter fw = new FileWriter(configFile)) {
-            fw.write("apikey=" + apiKey + "\n");
-            fw.write("path=" + path);
-        } catch (IOException e) {
-            e.printStackTrace();
+        return configFile;
+    }
+
+    public static ConfigFile readConfigFile() throws IOException {
+        Properties properties = new Properties();
+
+        try (FileInputStream fis = new FileInputStream(CONFIG_FILE_NAME)) {
+            properties.load(fis);
+            String apiKey = properties.getProperty("apiKey");
+            String osuDirectory = properties.getProperty("osuDirectory");
+            String username = properties.getProperty("username");
+            String password = properties.getProperty("password");
+            return new ConfigFile(apiKey, osuDirectory, username, password);
         }
     }
 
@@ -58,7 +76,7 @@ public class ConfigFileManager {
             String osuDirectory = SCANNER.nextLine();
             if (Validator.validateOsuDirectory(osuDirectory)) {
                 System.out.println("Location is valid!");
-                return osuDirectory.replace("\\", "\\\\");
+                return osuDirectory;
             }
             System.out.println("Location is invalid! Must be in a similar format to 'C:\\Program Files\\osu!'");
         }
