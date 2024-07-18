@@ -147,8 +147,8 @@ public class BeatmapDownloader {
     }
 
     public static boolean validateOsuDirectory(String thisPath) {
-        File songsFolder = new File(thisPath + "\\Songs");
-        return songsFolder.isDirectory() && thisPath.matches("(?:[^\\\\]+\\\\)+osu!$");
+        File songsFolder = new File(thisPath + File.separator + "Songs");
+        return songsFolder.isDirectory() && thisPath.endsWith(File.separator + "osu!");
     }
 
     public static Set<Integer> getBeatmapSetIdsFromDatabaseFile() {
