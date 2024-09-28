@@ -3,39 +3,52 @@ package com.jatie;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+/**
+ * osu!.db is a C# binary file. Java binary files are formatted differently.
+ * This class can read required information from a C# style binary file.
+ */
 public class BinaryReader {
-    public static int readInt(final DataInputStream is) throws IOException {
-        int value = is.readInt();
-        int b2 = value >> 8 & 0xff;
-        int b3 = value >> 16 & 0xff;
-        int b4 = value >> 24 & 0xff;
-
-        return value << 24 | b2 << 16 | b3 << 8 | b4;
+    public static int readInt(final DataInputStream dis) throws IOException {
+        return Integer.reverseBytes(dis.readInt());
     }
 
-    public static void skipString(final DataInputStream is) throws IOException {
-        if (is.read() == 0) {
+    public static void skipString(final DataInputStream dis) throws IOException {
+        if (dis.read() == 0) {
             return;
         }
-        is.skip(getStringLength(is));
+        dis.skip(getStringLength(dis));
     }
 
-    public static void skipString(final DataInputStream is, int num) throws IOException {
+    public static void skipString(final DataInputStream dis, int num) throws IOException {
         for (; num > 0; num--) {
-            skipString(is);
+            skipString(dis);
         }
     }
 
-    public static int getStringLength(final DataInputStream is) throws IOException {
+    public static int getStringLength(final DataInputStream dis) throws IOException {
         int count = 0;
         int shift = 0;
+
         while (true) {
-            int b = is.read();
+            int b = dis.read();
             count |= (b & 0x7F) << shift;
-            shift += 7;
             if ((b & 0x80) == 0) {
                 return count;
             }
+            shift += 7;
         }
+    }
+
+    public static String readString(final DataInputStream dis) throws IOException {
+        if (dis.read() == 0) {
+            return "";
+        }
+        int val = getStringLength(dis);
+
+        byte[] buffer = new byte[val];
+        if (dis.read(buffer) < 0) {
+            throw new IOException("EOF");
+        }
+        return new String(buffer);
     }
 }
