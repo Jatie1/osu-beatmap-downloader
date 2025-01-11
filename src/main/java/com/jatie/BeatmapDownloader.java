@@ -169,7 +169,7 @@ public class BeatmapDownloader {
                 BinaryReader.skipString(d, 9);
                 d.skip(39);
                 for (int j = 0; j < 4; j++) {
-                    d.skip(BinaryReader.readInt(d) * 14L);
+                    d.skip(BinaryReader.readInt(d) * 10L);
                 }
                 d.skip(12);
                 d.skip(BinaryReader.readInt(d) * 17L + 4);
