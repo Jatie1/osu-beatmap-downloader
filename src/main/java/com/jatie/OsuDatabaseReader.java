@@ -25,7 +25,7 @@ public class OsuDatabaseReader {
                 BinaryReader.skipString(dis, 9);
                 dis.skip(39);
                 for (int j = 0; j < 4; j++) {
-                    dis.skip(BinaryReader.readInt(dis) * 14L);
+                    dis.skip(BinaryReader.readInt(dis) * 10L);
                 }
                 dis.skip(12);
                 dis.skip(BinaryReader.readInt(dis) * 17L + 4);
