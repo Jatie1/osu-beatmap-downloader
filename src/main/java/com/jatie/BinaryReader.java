@@ -39,16 +39,16 @@ public class BinaryReader {
         }
     }
 
-    public static String readString(final DataInputStream dis) throws IOException {
-        if (dis.read() == 0) {
-            return "";
-        }
-        int val = getStringLength(dis);
-
-        byte[] buffer = new byte[val];
-        if (dis.read(buffer) < 0) {
-            throw new IOException("EOF");
-        }
-        return new String(buffer);
-    }
+//    public static String readString(final DataInputStream dis) throws IOException {
+//        if (dis.read() == 0) {
+//            return "";
+//        }
+//        int val = getStringLength(dis);
+//
+//        byte[] buffer = new byte[val];
+//        if (dis.read(buffer) < 0) {
+//            throw new IOException("EOF");
+//        }
+//        return new String(buffer);
+//    }
 }
