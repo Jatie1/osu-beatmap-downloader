@@ -16,7 +16,7 @@ public class BinaryReader {
         if (dis.read() == 0) {
             return;
         }
-        dis.skip(getStringLength(dis));
+        dis.skipBytes(getStringLength(dis));
     }
 
     public static void skipString(final DataInputStream dis, int num) throws IOException {
