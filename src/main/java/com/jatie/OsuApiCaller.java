@@ -4,7 +4,9 @@ import com.jatie.entity.Beatmap;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -21,7 +23,7 @@ public class OsuApiCaller {
 
     public static Set<Beatmap> getAllBeatmapsFromApi(String dateSince, String dateTo, String apiKey,
                                                      boolean userIncludeRankedMaps, boolean userIncludeApprovedMaps,
-                                                     boolean userIncludeQualifiedMaps, boolean userIncludeLovedMaps) throws Exception {
+                                                     boolean userIncludeQualifiedMaps, boolean userIncludeLovedMaps) throws IOException, URISyntaxException, InterruptedException {
         System.out.println("\nFetching beatmap information from osu! API...");
         Set<Beatmap> beatmapSets = new HashSet<>();
 
@@ -51,7 +53,7 @@ public class OsuApiCaller {
         return beatmapSets;
     }
 
-    private static String fetchJsonData(HttpClient client, String apiKey, String dateSince) throws Exception {
+    private static String fetchJsonData(HttpClient client, String apiKey, String dateSince) throws IOException, InterruptedException, URISyntaxException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI("https://osu.ppy.sh/api/get_beatmaps?k=" + apiKey + "&m=0&since=" + URLEncoder.encode(dateSince, StandardCharsets.UTF_8)))
                 .GET()

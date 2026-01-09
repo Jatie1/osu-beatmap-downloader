@@ -8,30 +8,24 @@ import java.net.http.HttpClient;
 import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.Set;
 
 public class Downloader {
 
-    private static final Set<Integer> BROKEN_BEATMAPS = new HashSet<>();
-
-    public static void downloadBeatmaps(Set<Beatmap> missingBeatmaps, String osuDirectory, String sessionCookie, int downloadStrategy) throws Exception {
+    public static void downloadBeatmaps(Set<Beatmap> missingBeatmaps, String osuDirectory, String sessionCookie) throws Exception {
         System.out.println("\nStarting downloads!");
 
         long startTime = System.currentTimeMillis();
         String songsDirectory = osuDirectory + File.separator + "Songs";
 
-        switch (downloadStrategy) {
-            case 1:
-                downloadAllBeatmapsFromUrl(missingBeatmaps, songsDirectory, sessionCookie);
-            case 2:
-
-        }
+        downloadAllBeatmapsFromUrl(missingBeatmaps, songsDirectory, sessionCookie);
 
         Duration duration = Duration.ofMillis(System.currentTimeMillis() - startTime);
         long days = duration.toDays();
@@ -40,6 +34,7 @@ public class Downloader {
         long seconds = duration.toSecondsPart();
 
         System.out.println("\nCompleted all downloads in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s! Check failedbeatmaps.txt for all beatmaps that couldn't be downloaded!");
+        System.out.println();
     }
 
     private static void downloadAllBeatmapsFromUrl(Set<Beatmap> beatmapsToDownload, String songsDirectory, String sessionCookie) throws Exception {
@@ -76,28 +71,36 @@ public class Downloader {
                     .GET()
                     .build();
 
-            HttpResponse<Path> response = client.send(request, HttpResponse.BodyHandlers.ofFile(outputFile));
+            while (true) {
+                HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
 
-            if (response.statusCode() == 429) {
-                System.out.println("The program has hit osu.ppy.sh's rate limit! We must wait for 30 minutes to download maps again...");
-                Thread.sleep(1800200);
-                return downloadSingleBeatmapFromUrl(beatmap, songsDirectory, sessionCookie, client);
+                switch (response.statusCode()) {
+                    case 200:
+                        try (InputStream in = response.body()) {
+                            Files.copy(in, outputFile, StandardCopyOption.REPLACE_EXISTING);
+                        }
+                        System.out.println("Completed " + outputFile);
+                        return true;
+                    case 401:
+                        System.out.println("The sessionCookie in beatmapdownloader.cfg is invalid. It may have either expired or it has not been inputted correctly. Force quitting the program.");
+                        return false;
+                    case 429:
+                        System.out.println("The program has hit osu.ppy.sh's rate limit! We must wait for 30 minutes to download maps again...");
+                        Thread.sleep(1800200);
+                        break;
+                    default:
+                        System.out.println("Unknown response code: " + response.statusCode());
+                        return false;
+                }
             }
-
-            if (response.statusCode() != 200) {
-                return false;
-            }
-
-            System.out.println("Completed " + outputFile);
-            return true;
-
         } catch (Exception e) {
+            System.out.println("An unknown error occurred: " + e.getMessage());
             return false;
         }
     }
 
     private static boolean shouldBeatmapBeDownloaded(Beatmap beatmap) {
-        return !beatmap.isRemoved() && !BROKEN_BEATMAPS.contains(beatmap.setId());
+        return !beatmap.isRemoved();
     }
 
     private static void writeFailedBeatmap(Beatmap failedBeatmap, String reason) throws IOException {

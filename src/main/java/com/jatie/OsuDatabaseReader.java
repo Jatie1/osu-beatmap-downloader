@@ -2,15 +2,12 @@ package com.jatie;
 
 import com.jatie.entity.ConfigFileProperties;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
 public class OsuDatabaseReader {
-    public static Set<Integer> getBeatmapSetIdsFromDBFile(ConfigFileProperties configFileProperties) throws Exception {
+    public static Set<Integer> getBeatmapSetIdsFromDBFile(ConfigFileProperties configFileProperties) throws IOException {
         File osuDBFile = new File(configFileProperties.osuDirectory(), "osu!.db");
 
         System.out.println("\nScanning osu!.db file...");
@@ -21,7 +18,7 @@ public class OsuDatabaseReader {
             BinaryReader.skipString(dis);
             int numberOfBeatmaps = BinaryReader.readInt(dis);
 
-            for (int i = 1; i < numberOfBeatmaps + 1; i++) {
+            for (int i = 1; i <= numberOfBeatmaps; i++) {
                 if (i % 100 == 0) {
                     System.out.print("Scanning beatmap " + i + " of " + numberOfBeatmaps + "...\r");
                 }

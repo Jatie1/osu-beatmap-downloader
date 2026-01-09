@@ -11,7 +11,6 @@ public class BeatmapDownloader {
     public static void main(String[] args) throws Exception {
         OnScreen.disclaimer();
         ConfigFileProperties configFileProperties = ConfigFileManager.manageConfigFile();
-        //int downloadStrategy =
         String[] yearRange = OnScreen.userEnterYearRange();
         boolean userIncludeRankedMaps = OnScreen.userEnterRankedStatusPreference("ranked");
         boolean userIncludeApprovedMaps = OnScreen.userEnterRankedStatusPreference("approved");

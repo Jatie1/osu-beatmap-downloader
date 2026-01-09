@@ -2,6 +2,7 @@ package com.jatie;
 
 import com.jatie.entity.ConfigFileProperties;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -10,7 +11,7 @@ import java.net.http.HttpResponse;
 import java.io.File;
 
 public class Validator {
-    public static boolean validateConfigFile(ConfigFileProperties configFileProperties) throws Exception {
+    public static boolean validateConfigFile(ConfigFileProperties configFileProperties) throws IOException, InterruptedException {
         boolean isValid = true;
         if (!validateApiKey(configFileProperties.apiKey())) {
             System.out.println("Invalid API key from config file!");
@@ -23,7 +24,7 @@ public class Validator {
         return isValid;
     }
 
-    public static boolean validateApiKey(String apiKey) throws Exception {
+    public static boolean validateApiKey(String apiKey) throws IOException, InterruptedException {
         try (HttpClient client = HttpClient.newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://osu.ppy.sh/api/get_beatmaps?k=" + apiKey + "&s=1"))

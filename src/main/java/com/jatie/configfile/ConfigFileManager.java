@@ -12,7 +12,7 @@ import java.util.Properties;
 public class ConfigFileManager {
     private static final File CONFIG_FILE = new File("beatmapdownloader.cfg");
 
-    public static ConfigFileProperties manageConfigFile() throws Exception {
+    public static ConfigFileProperties manageConfigFile() throws IOException, InterruptedException {
         if (!CONFIG_FILE.exists()) {
             System.out.println("\nConfiguration file does not exist! Ensure your config file exists and is accessible by external programs. Press enter to re-scan for the config file.");
             OnScreen.SCANNER.nextLine();
