@@ -16,12 +16,14 @@ public class ConfigFileManager {
         if (!CONFIG_FILE.exists()) {
             System.out.println("\nConfiguration file does not exist! Ensure your config file exists and is accessible by external programs. Press enter to re-scan for the config file.");
             OnScreen.SCANNER.nextLine();
+            return manageConfigFile();
         }
         System.out.println("\nReading properties from config file...");
         ConfigFileProperties configFileProperties = readConfigFile();
         if (!Validator.validateConfigFile(configFileProperties)) {
             System.out.println("\nConfiguration file properties are not valid! Ensure your config file has the required entries and values. Press enter to re-scan the config file.");
             OnScreen.SCANNER.nextLine();
+            return manageConfigFile();
         }
         return configFileProperties;
     }
