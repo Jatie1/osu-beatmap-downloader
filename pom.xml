@@ -41,6 +41,7 @@
                                 </transformer>
                             </transformers>
                             <finalName>beatmap-downloader</finalName>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
                     </execution>
                 </executions>
