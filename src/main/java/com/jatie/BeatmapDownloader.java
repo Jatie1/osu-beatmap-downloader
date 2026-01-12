@@ -19,6 +19,6 @@ public class BeatmapDownloader {
         Set<Integer> beatmapSetIdsFromDB = OsuDatabaseReader.getBeatmapSetIdsFromDBFile(configFileProperties);
         Set<Beatmap> beatmapsToDownload = OsuApiCaller.getAllBeatmapsFromApi(yearRange[0], yearRange[1], configFileProperties.apiKey(), userIncludeRankedMaps, userIncludeApprovedMaps, userIncludeQualifiedMaps, userIncludeLovedMaps);
         beatmapsToDownload.removeIf(beatmap -> beatmapSetIdsFromDB.contains(beatmap.setId())); // Filter out all the beatmaps from the osu!.db file
-        Downloader.downloadBeatmaps(beatmapsToDownload, configFileProperties.osuDirectory(), configFileProperties.sessionCookie(), 1);
+        Downloader.downloadBeatmaps(beatmapsToDownload, configFileProperties.osuDirectory(), configFileProperties.sessionCookie());
     }
 }
