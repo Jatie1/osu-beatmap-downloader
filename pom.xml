@@ -7,6 +7,7 @@
     <groupId>beatmapdownloader</groupId>
     <artifactId>beatmap-downloader</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <dependencies>
         <dependency>
             <groupId>org.json</groupId>
@@ -18,25 +19,62 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.jatie.BeatmapDownloader</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.5.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.1</version>
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.jatie.BeatmapDownloader</mainClass>
+                                </transformer>
+                            </transformers>
+                            <finalName>beatmap-downloader</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.6.3</version>
+                <executions>
+                    <execution>
+                        <id>jpackage</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${java.home}/bin/jpackage</executable>
+                            <arguments>
+                                <argument>--input</argument>
+                                <argument>target</argument>
+                                <argument>--dest</argument>
+                                <argument>target</argument>
+                                <argument>--name</argument>
+                                <argument>BeatmapDownloader</argument>
+                                <argument>--main-jar</argument>
+                                <argument>beatmap-downloader.jar</argument>
+                                <argument>--main-class</argument>
+                                <argument>com.jatie.BeatmapDownloader</argument>
+                                <argument>--type</argument>
+                                <argument>app-image</argument>
+                                <argument>--win-console</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
