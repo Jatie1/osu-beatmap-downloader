@@ -3,18 +3,12 @@ package com.jatie;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Properties;
@@ -159,28 +153,28 @@ public class BeatmapDownloader {
             SCANNER.nextLine();
         }
         System.out.println("\nScanning osu!.db file...");
-        try (DataInputStream d = new DataInputStream(new FileInputStream(dbFile))) {
-            d.skip(17);
+        try (DataInputStream d = new DataInputStream(new BufferedInputStream(Files.newInputStream(dbFile.toPath())))) {
+            d.skipBytes(17);
             BinaryReader.skipString(d);
             int numberBeatmaps = BinaryReader.readInt(d);
 
             for (int i = 1; i < numberBeatmaps + 1; i++) {
                 System.out.print("Scanning beatmap " + i + " of " + numberBeatmaps + "...\r");
                 BinaryReader.skipString(d, 9);
-                d.skip(39);
+                d.skipBytes(39);
                 for (int j = 0; j < 4; j++) {
-                    d.skip(BinaryReader.readInt(d) * 10L);
+                    d.skipBytes(BinaryReader.readInt(d) * 10);
                 }
-                d.skip(12);
-                d.skip(BinaryReader.readInt(d) * 17L + 4);
+                d.skipBytes(12);
+                d.skipBytes(BinaryReader.readInt(d) * 17 + 4);
                 beatmapSetIds.add(BinaryReader.readInt(d));
-                d.skip(15);
+                d.skipBytes(15);
                 BinaryReader.skipString(d, 2);
-                d.skip(2);
+                d.skipBytes(2);
                 BinaryReader.skipString(d);
-                d.skip(10);
+                d.skipBytes(10);
                 BinaryReader.skipString(d);
-                d.skip(18);
+                d.skipBytes(18);
             }
             System.out.println("Finished scanning " + beatmapSetIds.size() + " beatmap sets from " + numberBeatmaps + " beatmaps!\n");
         } catch (IOException e) {

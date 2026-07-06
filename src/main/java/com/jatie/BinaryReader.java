@@ -13,7 +13,7 @@ public class BinaryReader {
         if (is.read() == 0) {
             return;
         }
-        is.skip(getStringLength(is));
+        is.skipBytes(getStringLength(is));
     }
 
     public static void skipString(final DataInputStream is, int num) throws IOException {
