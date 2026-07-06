@@ -233,7 +233,7 @@ public class BeatmapDownloader {
         outerloop: // I hate this code
         while (true) {
             String jsonText = null;
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(new URL("https://osu.ppy.sh/api/get_beatmaps?k=" + apiKey + "&m=0&since=" + dateRange[0]).openStream(), StandardCharsets.UTF_8))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(new URL("https://osu.ppy.sh/api/get_beatmaps?k=" + apiKey + "&m=0&since=" + URLEncoder.encode(dateRange[0], "UTF-8")).openStream(), StandardCharsets.UTF_8))) {
                 jsonText = br.lines().collect(Collectors.joining());
             } catch (IOException e) {
                 e.printStackTrace();
